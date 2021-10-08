@@ -5,7 +5,7 @@
 1. "git clone" repository on your device
 2. run "docker-compose up -d" inside cloned repository
 3. run "docker exec nodejs-server-dev sequelize db:migrate --env development" to run database migrations
-4. Postman APIs collection can be found "/nodejs-server/docs"
+4. Postman APIs collection && ERD Diagram can be found "/nodejs-server/docs"
 
 ## Open database admin portal:
 

@@ -1,21 +1,5 @@
 version: '3.8'
 
-### MySql Adminer ###
-
-# @localhost:8080 (adminer)
-# System: MySQL <DB System to connect>
-# Server: mysql-database <should match the starting tag before image tag > (in your case mysql but you can change it to any name )
-# Username: root <username>
-# Password: <password>
-# Database: test_db <database name>
-
-
-### Sequelize db:migrate ###
-
-# Run "docker exec nodejs-server-dev sequelize migration:generate --name <migrationName>" after container successfully up
-# Run "docker exec nodejs-server-dev sequelize db:migrate --env development" after container successfully up
-
-
 services:
 
   mysql-database:
@@ -43,7 +27,7 @@ services:
   nodejs-server-dev:
     build:
       context: ./nodejs-server
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     environment:
       - NODE_ENV=development
       - SERVER_NAME=elmenus_server
