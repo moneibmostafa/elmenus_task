@@ -43,7 +43,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     queryInterface.dropTable('user');
   },
 };

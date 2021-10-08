@@ -19,12 +19,26 @@ module.exports = {
       available: {
         type: Sequelize.BOOLEAN,
       },
+      price: {
+        type: Sequelize.FLOAT,
+        validate: {
+          min: 1,
+          max: 1500,
+        },
+      },
+      name: {
+        type: Sequelize.STRING,
+        validate: {
+          min: 2,
+          max: 200,
+        },
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     queryInterface.dropTable('item');
   },
 };

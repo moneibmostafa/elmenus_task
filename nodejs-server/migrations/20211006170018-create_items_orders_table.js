@@ -3,25 +3,19 @@ const { DataTypes } = require('sequelize');
 module.exports = {
   up: async (queryInterface, Sequelize) =>
     queryInterface.createTable('itemsorders', {
-      id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        allowNull: false,
-        unique: true,
-      },
-      item_id: {
+      itemId: {
         type: DataTypes.UUID,
         references: {
           model: 'item',
-          key: 'id',
+          key: 'itemId',
         },
         allowNull: false,
       },
-      order_id: {
+      orderId: {
         type: DataTypes.UUID,
         references: {
           model: 'order',
-          key: 'id',
+          key: 'orderId',
         },
         allowNull: false,
       },

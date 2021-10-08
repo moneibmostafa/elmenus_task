@@ -1,3 +1,4 @@
 # dependencies
 /nodejs-server/node_modules
+/nodejs-server/logs
 /mysql-database

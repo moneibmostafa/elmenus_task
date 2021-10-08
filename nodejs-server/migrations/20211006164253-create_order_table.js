@@ -16,7 +16,7 @@ module.exports = {
           max: 1500,
         },
       },
-      user_id: {
+      userId: {
         type: Sequelize.UUID,
         references: {
           model: {

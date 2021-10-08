@@ -9,8 +9,9 @@ const router = express.Router();
 router.post('/', orderCreateRequestSchema, async (req, res, next) => {
   try {
     logger.log('info', 'Processing Order Create Request');
-    const item = await orderController.checkout(req.body);
-    res.status(201).json(item);
+    const order = await orderController.checkout(req.body);
+    logger.log('info', 'Order Executed Successfully');
+    res.status(201).json(order);
     return next();
   } catch (err) {
     return next(err);

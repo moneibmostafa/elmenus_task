@@ -36,16 +36,15 @@ class OrderController extends BaseController {
     const orderPayload = {
       [this.primaryKey]: uuid(),
       totalPayment: totalPrice,
-      user_id: user.id,
+      userId: user.id,
     };
     const items = modifiedCart.map((cartItem) => cartItem.item);
-    await this.adapter.createOrderAndUpdateItems(
+    const order = await this.adapter.createOrderAndUpdateItems(
       orderPayload,
       items,
       modifiedCart
     );
-    // const order = await super.create(body);
-    // await order.addItems(items);
+    return order;
   }
 
   async checkout(requestBody) {
@@ -69,7 +68,8 @@ class OrderController extends BaseController {
       await this.executePayment(paymentInfo, totalPrice);
 
       // 3) Update Database with purchase
-      await this.updateModels(user, modifiedCart, totalPrice);
+      const order = await this.updateModels(user, modifiedCart, totalPrice);
+      return order;
     } catch (error) {
       if (error instanceof errors.NotFound)
         throw new errors.BadRequest(error.message);
