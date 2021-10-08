@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const errors = require('../../errors/errors');
 
 module.exports = function validateRequest(req, res, next, schema) {
@@ -8,7 +9,9 @@ module.exports = function validateRequest(req, res, next, schema) {
   };
   const { error, value } = schema.validate(req.body, options);
   req.body = value;
-  if (error) {
+  if (error || _.isEmpty(value)) {
+    if (!error)
+      throw new errors.UnprocessableEntity('Input values cannot be recognized');
     throw new errors.UnprocessableEntity(
       error.details.map((x) => x.message).join(', ')
     );

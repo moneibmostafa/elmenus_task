@@ -2,7 +2,7 @@ const BaseValidator = require('./baseValidator');
 const config = require('../../config');
 const errors = require('../../errors/errors');
 
-const { minAcceptablePayment, maxAcceptablePayment } = config.payment;
+const { minAcceptablePayment, maxAcceptablePayment } = config.server;
 
 module.exports = class OrderValidator extends BaseValidator {
   constructor() {

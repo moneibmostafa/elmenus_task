@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 const { Sequelize, DataTypes } = require('sequelize');
-const { uuid } = require('uuidv4');
 const db = require('../database');
 
 const ItemsOrders = db.define(
@@ -140,21 +139,5 @@ Item.belongsToMany(Order, { through: 'itemsorders' });
 Order.belongsToMany(Item, { through: 'itemsorders' });
 Order.belongsTo(User);
 User.hasMany(Order);
-
-// Item.associate = (models) => {
-//   Item.belongsToMany(models.Order, {
-//     foreignKey: {
-//       type: DataTypes.UUID,
-//       allowNull: false,
-//       name: 'item_id',
-//     },
-//     through: ItemsOrders,
-//   });
-// };
-
-// Item.afterValidate('updateAvailabilityHook', (item, options) => {
-//   if (item.availabilityCount === 0) item.available = false;
-//   else item.available = true;
-// });
 
 module.exports = { User, Item, Order, ItemsOrders };

@@ -47,7 +47,7 @@ services:
     depends_on:
       - mysql-database
     volumes:
-      - "./nodejs-server:/server"
+      - ./nodejs-server:/server
     ports:
       - "8000:8000"
     container_name: nodejs-server-dev

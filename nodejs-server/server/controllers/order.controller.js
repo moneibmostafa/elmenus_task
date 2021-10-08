@@ -21,6 +21,18 @@ class OrderController extends BaseController {
     });
   }
 
+  async modifyCartStructure(cart) {
+    const modifiedCart = await Promise.map(cart, (cartItem) => {
+      const item = itemController.getByPk(cartItem.itemID);
+      // eslint-disable-next-line no-shadow
+      return join(item, (item) => ({
+        item,
+        count: cartItem.count,
+      }));
+    });
+    return modifiedCart;
+  }
+
   validate(items) {
     return this.validator.validate(items);
   }
@@ -51,15 +63,8 @@ class OrderController extends BaseController {
     try {
       const { userID, cart, paymentInfo } = requestBody;
       const user = await userController.getByPk(userID);
-
-      const modifiedCart = await Promise.map(cart, (cartItem) => {
-        const item = itemController.getByPk(cartItem.itemID);
-        // eslint-disable-next-line no-shadow
-        return join(item, (item) => ({
-          item,
-          count: cartItem.count,
-        }));
-      });
+      // Fetch items using items ids inside cart obj and replace the id with the whole item obj
+      const modifiedCart = await this.modifyCartStructure(cart);
 
       // 1) Apply validations before checkout process
       const { totalPrice } = this.validate(modifiedCart);

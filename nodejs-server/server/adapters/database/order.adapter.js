@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 const Promise = require('bluebird');
 const db = require('../../../database');
 const { logger } = require('../../../logger');
@@ -21,10 +22,11 @@ module.exports = class OrderAdapter extends BaseAdapter {
       await Promise.map(modifiedCartItems, async (cartItem) => {
         const availabilityCount =
           cartItem.item.availabilityCount - cartItem.count;
-        await cartItem.item.update(
-          { availabilityCount: availabilityCount },
-          { transaction }
-        );
+        const payload = {
+          availabilityCount,
+        };
+        if (availabilityCount < 1) payload['available'] = false;
+        await cartItem.item.update(payload, { transaction });
       });
     });
     return order;

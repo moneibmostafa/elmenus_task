@@ -1,7 +1,6 @@
 const BaseController = require('./baseController');
 const { ItemValidator } = require('../validators');
 const { ItemAdapter } = require('../adapters/database');
-const errors = require('../../errors/errors');
 
 class ItemController extends BaseController {
   constructor() {
@@ -29,12 +28,6 @@ class ItemController extends BaseController {
   async updateItem(itemID, body) {
     try {
       const payload = { ...body };
-      if (
-        payload.availabilityCount === undefined &&
-        payload.price === undefined
-      ) {
-        throw new errors.UnprocessableEntity('Invalid parameters update');
-      }
       if (payload.availabilityCount !== undefined) {
         payload.available = false;
         if (payload.availabilityCount > 0) payload.available = true;
