@@ -39,6 +39,6 @@
 
 ###### Process Flow:
 
-External request received --> routers --> schemas (input parameters validation) -->
-controllers --> validators (execute business logic validations)
-controllers --> adapters --> database
+- External request received --> routers --> schemas (input parameters validation) -->
+- controllers --> validators (execute business logic validations)
+- controllers --> adapters --> database
