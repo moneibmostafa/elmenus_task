@@ -1,12 +1,15 @@
-const BaseController = require('./Controller');
-const { UserAdapter } = require('../adapters/mysql_database');
+const BaseController = require('./baseController');
+const { UserValidator } = require('../validators');
+const { UserAdapter } = require('../adapters/database');
 const errors = require('../../errors/errors');
 
-module.exports = class UserController extends BaseController {
+class UserController extends BaseController {
   constructor() {
     super({
       adapter: new UserAdapter(),
+      validator: new UserValidator(),
       primaryKey: 'id',
+      name: 'user',
     });
   }
 
@@ -21,16 +24,6 @@ module.exports = class UserController extends BaseController {
     }
   }
 
-  async getUserByID(userID) {
-    try {
-      const user = await super.getByPk(userID);
-      if (!user) throw new errors.NotFound(`User not found`);
-      return user;
-    } catch (error) {
-      return super.handleError(error);
-    }
-  }
-
   async updateUser(userID, payload) {
     try {
       const response = await super.update(userID, payload);
@@ -39,4 +32,9 @@ module.exports = class UserController extends BaseController {
       return super.handleError(error);
     }
   }
-};
+}
+
+const userController = new UserController();
+Object.freeze(userController);
+
+module.exports = userController;

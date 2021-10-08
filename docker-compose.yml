@@ -54,6 +54,12 @@ services:
       - DB_PASSWORD=mostafa1996
       - DB_NAME=test_db
       - DB_PORT=3306
+
+      - STRIPE_PUBLISHABLE_KEY=pk_test_4Ai79ZHSM7w1XCY2ENXueK1O
+      - STRIPE_SECRET_KEY=sk_test_7Dp8d5ZXacxXF9109tPLHO9o
+
+      - MIN_ACCEPTABLE_PAYMENT=100
+      - MAX_ACCEPTABLE_PAYMENT=1500
     depends_on:
       - mysql-database
     volumes:

@@ -17,10 +17,21 @@ router.post('/', itemCreateRequestSchema, async (req, res, next) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  try {
+    logger.log('info', 'Processing All Items Get Request');
+    const item = await itemController.list(req.params.id);
+    res.status(200).json(item);
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});
+
 router.get('/:id', async (req, res, next) => {
   try {
     logger.log('info', 'Processing Item Get Request');
-    const item = await itemController.getItemByID(req.params.id);
+    const item = await itemController.getByPk(req.params.id);
     res.status(200).json(item);
     return next();
   } catch (err) {

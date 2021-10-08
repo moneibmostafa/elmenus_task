@@ -1,9 +1,9 @@
 const userSchema = require('./user');
 const itemSchema = require('./item');
-const checkoutSchema = require('./checkout');
+const orderSchema = require('./order');
 
 module.exports = {
   userSchema,
   itemSchema,
-  checkoutSchema,
+  orderSchema,
 };

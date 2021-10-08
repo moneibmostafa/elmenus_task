@@ -29,5 +29,5 @@ module.exports = {
       updatedAt: Sequelize.DATE,
     }),
 
-  down: async (queryInterface) => queryInterface.dropTable('product_orders'),
+  down: async (queryInterface) => queryInterface.dropTable('items_orders'),
 };

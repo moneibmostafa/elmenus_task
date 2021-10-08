@@ -20,7 +20,7 @@ router.post('/', userCreateRequestSchema, async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     logger.log('info', 'Processing User Get Request');
-    const user = await userController.getUserByID(req.params.id);
+    const user = await userController.getByPk(req.params.id);
     res.status(200).json(user);
     return next();
   } catch (err) {

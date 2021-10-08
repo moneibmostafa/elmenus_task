@@ -1,12 +1,15 @@
-const BaseController = require('./Controller');
-const { ItemAdapter } = require('../adapters/mysql_database');
+const BaseController = require('./baseController');
+const { ItemValidator } = require('../validators');
+const { ItemAdapter } = require('../adapters/database');
 const errors = require('../../errors/errors');
 
-module.exports = class ItemController extends BaseController {
+class ItemController extends BaseController {
   constructor() {
     super({
       adapter: new ItemAdapter(),
+      validator: new ItemValidator(),
       primaryKey: 'id',
+      name: 'item',
     });
   }
 
@@ -17,16 +20,6 @@ module.exports = class ItemController extends BaseController {
       if (payload.availabilityCount > 0) payload.available = true;
       payload.price = payload.price.toFixed(2);
       const item = await super.create(payload);
-      return item;
-    } catch (error) {
-      return super.handleError(error);
-    }
-  }
-
-  async getItemByID(itemID) {
-    try {
-      const item = await super.getByPk(itemID);
-      if (!item) throw new errors.NotFound(`item not found`);
       return item;
     } catch (error) {
       return super.handleError(error);
@@ -53,4 +46,9 @@ module.exports = class ItemController extends BaseController {
       return super.handleError(error);
     }
   }
-};
+}
+
+const itemController = new ItemController();
+Object.freeze(itemController);
+
+module.exports = itemController;
