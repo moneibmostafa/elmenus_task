@@ -1,37 +1,54 @@
 const request = require('supertest');
 const app = require('../../../server/startup');
+const UserAdapter = require('../../../server/adapters/database/user.adapter');
 
 let user = {
   firstname: 'mostafa',
   lastname: 'moneib',
-  email: 'aaa@hotmail.com',
+  email: 'asd@hotmail.com',
   password: '12345678',
 };
 
-const mockGetOne = jest.fn(undefined);
-const mockCreate = jest.fn();
-jest.mock('../../../server/adapters/database/user.adapter', () =>
+jest.mock('./../../../server/adapters/database/user.adapter', () =>
   jest.fn().mockImplementation(() => ({
-    getOne: () => mockGetOne,
-    create: () => mockCreate,
+    getOne: jest.fn().mockReturnValueOnce(null).mockReturnValueOnce({
+      firstname: 'mostafa',
+      lastname: 'moneib',
+      email: 'asd@hotmail.com',
+    }),
+    create: jest.fn().mockReturnValueOnce({
+      firstname: 'mostafa',
+      lastname: 'moneib',
+      email: 'asd@hotmail.com',
+    }),
   }))
 );
 
 describe('user create', () => {
-  test('create user successfully', async (done) => {
+  beforeEach(() => {
+    // Clear all instances and calls to constructor and all methods:
+    UserAdapter.mockClear();
+  });
+
+  test('create user successfully', async () => {
     const response = await request(app).post('/api/user').send(user);
-    expect(response.statusCode === 201);
+    expect(response.statusCode).toBe(201);
+  });
+
+  test('user already existed', async () => {
+    const response = await request(app).post('/api/user').send(user);
+    expect(response.statusCode).toBe(409);
   });
 
   test('invalid input', async () => {
     user.password = 1234;
     const response = await request(app).post('/api/user').send(user);
-    expect(response.statusCode === 422);
+    expect(response.statusCode).toBe(422);
   });
 
   test('empty input', async () => {
     user = {};
     const response = await request(app).post('/api/user').send(user);
-    expect(response.statusCode === 422);
+    expect(response.statusCode).toBe(422);
   });
 });

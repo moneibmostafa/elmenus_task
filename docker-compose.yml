@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  mysql-database:
+  mysql-database-dev:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -33,7 +33,7 @@ services:
       - SERVER_NAME=elmenus_server
       - PORT=8000
 
-      - DB_HOST=mysql-database
+      - DB_HOST=mysql-database-dev
       - DB_USER=root
       - DB_PASSWORD=mostafa1996
       - DB_NAME=dev_db
@@ -52,20 +52,23 @@ services:
       - "8000:8000"
     container_name: nodejs-server-dev
 
-  mysql-database-test:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      - MYSQL_DATABASE=test_db
-      - MYSQL_USER=mostafa
-      - MYSQL_PASSWORD=12345678
-      - MYSQL_ROOT_PASSWORD=mostafa1996   #### Passwords Should be imported as secret and not written in plain text ####
-    ports:
-      - 3307:3307
-    volumes:
-      - ./mysql-database-test:/var/lib/mysql
-    container_name: mysql-database-test
+############################# Testing ##############################
+
+  # mysql-database-test:
+  #   image: mysql
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   environment:
+  #     - MYSQL_DATABASE=test_db
+  #     - MYSQL_USER=mostafa
+  #     - MYSQL_PASSWORD=12345678
+  #     - MYSQL_ROOT_PASSWORD=mostafa1996   #### Passwords Should be imported as secret and not written in plain text ####
+  #   ports:
+  #     - 3307:3307
+  #   volumes:
+  #     - ./mysql-database-test:/var/lib/mysql
+  #   container_name: mysql-database-test
+
 
   nodejs-server-test:
     build:
@@ -76,10 +79,10 @@ services:
       - SERVER_NAME=elmenus_server
       - PORT=4000
 
-      - DB_HOST=mysql-database-test
+      - DB_HOST=mysql-database-dev
       - DB_USER=root
       - DB_PASSWORD=mostafa1996
-      - DB_NAME=test_db
+      - DB_NAME=dev_db
       - DB_PORT=3306
 
       - STRIPE_PUBLISHABLE_KEY=pk_test_4Ai79ZHSM7w1XCY2ENXueK1O
@@ -88,9 +91,9 @@ services:
       - MIN_ACCEPTABLE_PAYMENT=100
       - MAX_ACCEPTABLE_PAYMENT=1500
     depends_on:
-      - mysql-database-test
+      - mysql-database-dev
     volumes:
       - ./nodejs-server:/server
     ports:
       - "4000:4000"
-    container_name: nodejs-server-test
+    container_name: nodejs-server-test  
