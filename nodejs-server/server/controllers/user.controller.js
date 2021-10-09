@@ -16,6 +16,7 @@ class UserController extends BaseController {
   async createUser(payload) {
     try {
       let user = await super.getOne({ email: payload.email });
+      console.log('kkkkkkkkkkkkkkkkkkkkk', user);
       if (user) throw new errors.Conflict('user already exists');
       user = await super.create(payload);
       return user;

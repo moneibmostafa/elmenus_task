@@ -7,7 +7,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      - MYSQL_DATABASE=test_db
+      - MYSQL_DATABASE=dev_db
       - MYSQL_USER=mostafa
       - MYSQL_PASSWORD=12345678
       - MYSQL_ROOT_PASSWORD=mostafa1996   #### Passwords Should be imported as secret and not written in plain text ####
@@ -15,7 +15,7 @@ services:
       - 3307:3306
     volumes:
       - ./mysql-database:/var/lib/mysql
-    container_name: mysql-database
+    container_name: mysql-database-dev
 
   mysql-adminer:
     image: adminer
@@ -36,6 +36,49 @@ services:
       - DB_HOST=mysql-database
       - DB_USER=root
       - DB_PASSWORD=mostafa1996
+      - DB_NAME=dev_db
+      - DB_PORT=3306
+
+      - STRIPE_PUBLISHABLE_KEY=pk_test_4Ai79ZHSM7w1XCY2ENXueK1O
+      - STRIPE_SECRET_KEY=sk_test_7Dp8d5ZXacxXF9109tPLHO9o
+
+      - MIN_ACCEPTABLE_PAYMENT=100
+      - MAX_ACCEPTABLE_PAYMENT=1500
+    depends_on:
+      - mysql-database-dev
+    volumes:
+      - ./nodejs-server:/server
+    ports:
+      - "8000:8000"
+    container_name: nodejs-server-dev
+
+  mysql-database-test:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_DATABASE=test_db
+      - MYSQL_USER=mostafa
+      - MYSQL_PASSWORD=12345678
+      - MYSQL_ROOT_PASSWORD=mostafa1996   #### Passwords Should be imported as secret and not written in plain text ####
+    ports:
+      - 3307:3307
+    volumes:
+      - ./mysql-database-test:/var/lib/mysql
+    container_name: mysql-database-test
+
+  nodejs-server-test:
+    build:
+      context: ./nodejs-server
+      dockerfile: Dockerfile.test
+    environment:
+      - NODE_ENV=testing
+      - SERVER_NAME=elmenus_server
+      - PORT=4000
+
+      - DB_HOST=mysql-database-test
+      - DB_USER=root
+      - DB_PASSWORD=mostafa1996
       - DB_NAME=test_db
       - DB_PORT=3306
 
@@ -45,9 +88,9 @@ services:
       - MIN_ACCEPTABLE_PAYMENT=100
       - MAX_ACCEPTABLE_PAYMENT=1500
     depends_on:
-      - mysql-database
+      - mysql-database-test
     volumes:
       - ./nodejs-server:/server
     ports:
-      - "8000:8000"
-    container_name: nodejs-server-dev
+      - "4000:4000"
+    container_name: nodejs-server-test
