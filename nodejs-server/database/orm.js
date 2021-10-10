@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'development') {
       .sync({ alter: true })
       .then(() => logger.log('info', 'sync successful.'))
       .catch((error) => logger.log('error', 'sync failure', error));
-  }, 5000);
+  }, 10000);
 }
 
 module.exports = sequelize;
