@@ -3,13 +3,22 @@ const app = require('../../../server/startup');
 const UserAdapter = require('../../../server/adapters/database/user.adapter');
 
 let user = {
-  firstname: 'mostafa',
+  firstname: 'updated name',
   password: '12345678',
 };
 
 jest.mock('./../../../server/adapters/database/user.adapter', () =>
   jest.fn().mockImplementation(() => ({
     update: jest.fn().mockReturnValueOnce(true),
+    getByPk: jest
+      .fn()
+      .mockReturnValueOnce({
+        firstname: 'user firstname',
+        lastname: 'user lastname',
+        email: 'user@test.com',
+        password: '11111111',
+      })
+      .mockReturnValueOnce(null),
   }))
 );
 
@@ -24,6 +33,13 @@ describe('user update', () => {
       .put('/api/user/b7ea5136-13a3-4f22-94d6-bb5dd37ececc')
       .send(user);
     expect(response.statusCode).toBe(200);
+  });
+
+  test('update user does not exist', async () => {
+    const response = await request(app)
+      .put('/api/user/b7ea5136-13a3-4f22-94d6-bb5dd37ececc')
+      .send(user);
+    expect(response.statusCode).toBe(404);
   });
 
   test('invalid input', async () => {
