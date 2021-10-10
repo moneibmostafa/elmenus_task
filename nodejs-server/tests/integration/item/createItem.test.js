@@ -3,7 +3,7 @@ const app = require('../../../server/startup');
 const ItemAdapter = require('../../../server/adapters/database/item.adapter');
 
 let item = {
-  name: 'charger',
+  name: 'itemOne',
   availabilityCount: 10,
   price: 50,
 };
@@ -11,7 +11,7 @@ let item = {
 jest.mock('./../../../server/adapters/database/item.adapter', () =>
   jest.fn().mockImplementation(() => ({
     create: jest.fn().mockReturnValueOnce({
-      name: 'charger',
+      name: 'itemOne',
       availabilityCount: 10,
       price: 50,
       available: true,

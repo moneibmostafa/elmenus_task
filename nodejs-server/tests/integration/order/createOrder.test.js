@@ -8,9 +8,9 @@ const OrderAdapter = require('../../../server/adapters/database/order.adapter');
 jest.mock('./../../../server/adapters/database/user.adapter', () =>
   jest.fn().mockImplementation(() => ({
     getByPk: jest.fn().mockReturnValue({
-      firstname: 'mostafa',
-      lastname: 'moneib',
-      email: 'asd@hotmail.com',
+      firstname: 'testuser',
+      lastname: 'lastname',
+      email: 'user@test.com',
     }),
   }))
 );
@@ -25,14 +25,14 @@ jest.mock('./../../../server/adapters/database/item.adapter', () =>
         availabilityCount: 2,
         available: true,
         price: 40,
-        name: 'charger',
+        name: 'itemOne',
       })
       .mockReturnValueOnce({
         id: '9ddfa66d-75ae-4674-bd6c-41276d4c9bea',
         availabilityCount: 2,
         available: true,
         price: 40,
-        name: 'charger',
+        name: 'itemTwo',
       }),
   }))
 );

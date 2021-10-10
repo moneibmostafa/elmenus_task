@@ -3,23 +3,23 @@ const app = require('../../../server/startup');
 const UserAdapter = require('../../../server/adapters/database/user.adapter');
 
 let user = {
-  firstname: 'mostafa',
-  lastname: 'moneib',
-  email: 'asd@hotmail.com',
+  firstname: 'testuser',
+  lastname: 'lastname',
+  email: 'user@test.com',
   password: '12345678',
 };
 
 jest.mock('./../../../server/adapters/database/user.adapter', () =>
   jest.fn().mockImplementation(() => ({
     getOne: jest.fn().mockReturnValueOnce(null).mockReturnValueOnce({
-      firstname: 'mostafa',
-      lastname: 'moneib',
-      email: 'asd@hotmail.com',
+      firstname: 'updated',
+      lastname: 'lastname',
+      email: 'updated@test.com',
     }),
     create: jest.fn().mockReturnValueOnce({
-      firstname: 'mostafa',
-      lastname: 'moneib',
-      email: 'asd@hotmail.com',
+      firstname: 'updated',
+      lastname: 'lastname',
+      email: 'updated@test.com',
     }),
   }))
 );

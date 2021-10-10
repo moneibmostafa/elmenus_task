@@ -3,7 +3,7 @@ const app = require('../../../server/startup');
 const UserAdapter = require('../../../server/adapters/database/user.adapter');
 
 let user = {
-  firstname: 'updated name',
+  firstname: 'updatedname',
   password: '12345678',
 };
 
@@ -13,8 +13,8 @@ jest.mock('./../../../server/adapters/database/user.adapter', () =>
     getByPk: jest
       .fn()
       .mockReturnValueOnce({
-        firstname: 'user firstname',
-        lastname: 'user lastname',
+        firstname: 'userfirstname',
+        lastname: 'userlastname',
         email: 'user@test.com',
         password: '11111111',
       })

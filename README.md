@@ -7,6 +7,15 @@
 3. run "docker exec nodejs-server-dev sequelize db:migrate --env development" to run database migrations
 4. Postman APIs collection && ERD Diagram can be found "/nodejs-server/docs"
 
+## Docker-compose file:
+
+Docker compose file contains 4 services:
+
+1. nodejs-server-dev --> The main application
+2. mysql-database-dev --> Database used with main app
+3. mysql-adminer --> Admin portal for database @localhost:8080
+4. nodejs-server-test --> Service that runs unit/integration tests
+
 ## Open database admin portal:
 
 1. Go to "localhost:8080" on browser

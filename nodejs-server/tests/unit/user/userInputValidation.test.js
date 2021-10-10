@@ -3,9 +3,9 @@ const errors = require('../../../errors/errors');
 
 const req = {
   body: {
-    firstname: 'mostafa',
-    lastname: 'moneib',
-    email: 'aaa@hotmail.com',
+    firstname: 'testuser',
+    lastname: 'lastname',
+    email: 'user@test.com',
     password: '12345678',
   },
 };
@@ -23,8 +23,8 @@ test('validate create user input --> success', () => {
 
 test('validate update user input --> success', () => {
   req.body = {
-    firstname: 'mohamed',
-    lastname: 'moenib',
+    firstname: 'update firstname',
+    lastname: 'update lastname',
   };
   try {
     userSchema.userUpdateRequestSchema(req, res, next);
