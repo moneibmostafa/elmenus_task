@@ -34,8 +34,9 @@ class ItemController extends BaseController {
 
   async updateItem(itemID, body) {
     try {
+      const item = await super.getByPk(itemID);
       const payload = this.formatPayload(body);
-      const response = await super.update(itemID, payload);
+      const response = await super.update(item.id, payload);
       return response;
     } catch (error) {
       return super.handleError(error);

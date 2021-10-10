@@ -26,7 +26,8 @@ class UserController extends BaseController {
 
   async updateUser(userID, payload) {
     try {
-      const response = await super.update(userID, payload);
+      const user = await super.getByPk(userID);
+      const response = await super.update(user.id, payload);
       return response;
     } catch (error) {
       return super.handleError(error);

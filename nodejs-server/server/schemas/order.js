@@ -12,7 +12,7 @@ function orderCreateRequestSchema(req, res, next) {
     paymentInfo: Joi.object({
       token: Joi.string().required(),
       currency: Joi.string().required(),
-    }),
+    }).required(),
   });
   validateRequest(req, res, next, orderCreate);
 }
