@@ -5,10 +5,11 @@
 1. "git clone" repository on your device
 2. run "docker-compose up -d" inside cloned repository
 3. Postman APIs collection && ERD Diagram can be found "/nodejs-server/docs"
+4. nodejs-server-dev is the main-app, it waits for mysql to be up and haelthy, then the main-app will appear in docker hub
 
 ## Docker-compose file:
 
-Docker compose file contains 4 services:
+There are 4 services that should be up and running:
 
 1. nodejs-server-dev --> The main application
 2. mysql-database-dev --> Database used with main app
