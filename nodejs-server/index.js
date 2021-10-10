@@ -1,2 +1,4 @@
-require('./database');
-require('./server');
+setTimeout(() => {
+  require('./database');
+  require('./server');
+}, 10000);

@@ -2,10 +2,7 @@ const Sequelize = require('sequelize');
 const config = require('../config');
 const { logger } = require('../logger');
 
-let sequelize;
-
-const databaseInit = () => {
-  sequelize = new Sequelize(
+  const sequelize = new Sequelize(
     `${config.db.dialect}://${config.db.username}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`,
     {
       logging: function (str) {
@@ -21,7 +18,7 @@ const databaseInit = () => {
     }
     )
     .catch((error) => {
-      logger.log('error', 'Unable to connect to the database:', error);
+      logger.log('error', 'Unable to connect to the database:', error);git 
       setTimeout(() => databaseInit(), 5000);
     }
     );
@@ -30,8 +27,5 @@ const databaseInit = () => {
     .sync({ alter: true })
     .then(() => logger.log('info', 'sync successful.'))
     .catch((error) => logger.log('error', 'sync failure', error));
-}
-
-databaseInit();
 
 module.exports = sequelize;
