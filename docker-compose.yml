@@ -44,6 +44,8 @@ services:
 
       - MIN_ACCEPTABLE_PAYMENT=100
       - MAX_ACCEPTABLE_PAYMENT=1500
+    volumes:
+      - ./nodejs-server:/server
     depends_on:
       - mysql-database-dev
     ports:

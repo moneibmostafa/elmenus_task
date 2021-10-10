@@ -9,7 +9,8 @@ RUN npm install -g nodemon
 RUN npm install -g mysql2
 RUN npm install -g sequelize
 RUN npm install -g sequelize-cli
-RUN npm install
+RUN npm install \
+    && mv node_modules /node_modules
 
 COPY . .
 
