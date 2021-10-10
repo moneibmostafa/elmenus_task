@@ -2,17 +2,16 @@ const Sequelize = require('sequelize');
 const config = require('../config');
 const { logger } = require('../logger');
 
-const sequelize = new Sequelize(
-  `${config.db.dialect}://${config.db.username}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`,
-  {
-    logging: function (str) {
-      logger.log('info', `Sequelize: ${str}`);
-    },
-  }
-);
-
 if (process.env.NODE_ENV === 'development') {
   setTimeout(() => {
+    const sequelize = new Sequelize(
+      `${config.db.dialect}://${config.db.username}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.database}`,
+      {
+        logging: function (str) {
+          logger.log('info', `Sequelize: ${str}`);
+        },
+      }
+    );
     sequelize
       .authenticate()
       .then(() => {
