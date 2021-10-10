@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 const Promise = require('bluebird');
 const { uuid } = require('uuidv4');
 const BaseController = require('./baseController');
@@ -21,16 +22,15 @@ class OrderController extends BaseController {
     });
   }
 
-  async modifyCartStructure(cart) {
-    const modifiedCart = await Promise.map(cart, (cartItem) => {
+  async populateCart(cart) {
+    const populatedCart = await Promise.map(cart, (cartItem) => {
       const item = itemController.getByPk(cartItem.itemID);
-      // eslint-disable-next-line no-shadow
       return join(item, (item) => ({
         item,
         count: cartItem.count,
       }));
     });
-    return modifiedCart;
+    return populatedCart;
   }
 
   validate(items) {
@@ -44,17 +44,15 @@ class OrderController extends BaseController {
     logger.log('info', 'Payment successfull');
   }
 
-  async updateModels(user, modifiedCart, totalPrice) {
+  async updateModels(user, populatedCart, totalPrice) {
     const orderPayload = {
       [this.primaryKey]: uuid(),
       totalPayment: totalPrice,
       userId: user.id,
     };
-    const items = modifiedCart.map((cartItem) => cartItem.item);
     const order = await this.adapter.createOrderAndUpdateItems(
       orderPayload,
-      items,
-      modifiedCart
+      populatedCart
     );
     return order;
   }
@@ -63,17 +61,17 @@ class OrderController extends BaseController {
     try {
       const { userID, cart, paymentInfo } = requestBody;
       const user = await userController.getByPk(userID);
-      // Fetch items using items ids inside cart obj and replace the id with the whole item obj
-      const modifiedCart = await this.modifyCartStructure(cart);
+      // Populate cart with items by fetching each item from database
+      const populatedCart = await this.populateCart(cart);
 
-      // 1) Apply validations before checkout process
-      const { totalPrice } = this.validate(modifiedCart);
+      // 1) Apply validations before checkout process - will return items updated quantaties + total price
+      const { totalPrice } = this.validate(populatedCart);
 
       // 2) Charge user credit card
       await this.executePayment(paymentInfo, totalPrice);
 
       // 3) Update Database with purchase
-      const order = await this.updateModels(user, modifiedCart, totalPrice);
+      const order = await this.updateModels(user, populatedCart, totalPrice);
       return order;
     } catch (error) {
       if (error instanceof errors.NotFound)

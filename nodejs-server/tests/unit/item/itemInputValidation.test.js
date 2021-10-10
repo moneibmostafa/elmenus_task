@@ -1,43 +1,45 @@
-const { userSchema } = require('../../../server/schemas');
+const { itemSchema } = require('../../../server/schemas');
+const config = require('../../../config');
 const errors = require('../../../errors/errors');
+
+const { maxAcceptablePayment } = config.server;
 
 const req = {
   body: {
-    firstname: 'mostafa',
-    lastname: 'moneib',
-    email: 'aaa@hotmail.com',
-    password: '12345678',
+    name: 'item',
+    availabilityCount: 10,
+    price: 50,
   },
 };
 const res = {};
 const next = () => {};
 
-test('validate create user input --> success', () => {
+test('validate create item input --> success', () => {
   try {
-    userSchema.userCreateRequestSchema(req, res, next);
+    itemSchema.itemCreateRequestSchema(req, res, next);
     expect(true).toBe(true); // test succeed if no error thrown
   } catch (error) {
     expect(true).toBe(false); // test fail if error thrown
   }
 });
 
-test('validate update user input --> success', () => {
+test('validate update item input --> success', () => {
   req.body = {
-    firstname: 'mohamed',
-    lastname: 'moenib',
+    availabilityCount: 20,
+    price: 70,
   };
   try {
-    userSchema.userUpdateRequestSchema(req, res, next);
+    itemSchema.itemUpdateRequestSchema(req, res, next);
     expect(true).toBe(true); // test succeed if no error thrown
   } catch (error) {
     expect(true).toBe(false); // test fail if error thrown
   }
 });
 
-test('validate create user invalid input --> fail', () => {
-  req.body.password = 1234;
+test('validate create item invalid input --> fail', () => {
+  req.body.price = maxAcceptablePayment + 1;
   try {
-    userSchema.userCreateRequestSchema(req, res, next);
+    itemSchema.itemCreateRequestSchema(req, res, next);
     expect(true).toBe(false); // test fail if no error thrown
   } catch (error) {
     expect(error.statusCode).toBe(422);
@@ -45,10 +47,10 @@ test('validate create user invalid input --> fail', () => {
   }
 });
 
-test('validate update user invalid input --> fail', () => {
-  req.body.password = 1234;
+test('validate update item invalid input --> fail', () => {
+  req.body.price = maxAcceptablePayment + 1;
   try {
-    userSchema.userUpdateRequestSchema(req, res, next);
+    itemSchema.itemUpdateRequestSchema(req, res, next);
     expect(true).toBe(false); // test fail if no error thrown
   } catch (error) {
     expect(error.statusCode).toBe(422);
@@ -56,10 +58,10 @@ test('validate update user invalid input --> fail', () => {
   }
 });
 
-test('validate create user empty input --> fail', () => {
+test('validate create item empty input --> fail', () => {
   req.body = {};
   try {
-    userSchema.userCreateRequestSchema(req, res, next);
+    itemSchema.itemCreateRequestSchema(req, res, next);
     expect(true).toBe(false); // test fail if no error thrown
   } catch (error) {
     expect(error.statusCode).toBe(422);
@@ -67,13 +69,14 @@ test('validate create user empty input --> fail', () => {
   }
 });
 
-test('validate update user empty input --> fail', () => {
+test('validate update item empty input --> fail', () => {
   req.body = {};
   try {
-    userSchema.userUpdateRequestSchema(req, res, next);
+    itemSchema.itemUpdateRequestSchema(req, res, next);
     expect(true).toBe(false); // test fail if no error thrown
   } catch (error) {
     expect(error.statusCode).toBe(422);
+    expect(error.message).toBe('Input values cannot be recognized');
     expect(error).toBeInstanceOf(errors.UnprocessableEntity);
   }
 });

@@ -12,22 +12,26 @@ module.exports = class OrderAdapter extends BaseAdapter {
     });
   }
 
-  async createOrderAndUpdateItems(orderPayload, items, modifiedCartItems) {
+  async createOrderAndUpdateItems(orderPayload, modifiedCartItems) {
     logger.log('info', 'Creating Order and updating items in database');
     let order;
     await db.transaction(async (transaction) => {
+      // 1) create new order in database
       order = await this.model.create(orderPayload, { transaction });
-      await order.addItems(items, { transaction });
 
+      // 2) update items with purchased quantaties
+      const items = [];
       await Promise.map(modifiedCartItems, async (cartItem) => {
-        const availabilityCount =
-          cartItem.item.availabilityCount - cartItem.count;
+        items.push(cartItem.item);
         const payload = {
-          availabilityCount,
+          availabilityCount: cartItem.item.availabilityCount,
+          available: cartItem.item.available,
         };
-        if (availabilityCount < 1) payload['available'] = false;
         await cartItem.item.update(payload, { transaction });
       });
+
+      // 3) add items into created order
+      await order.addItems(items, { transaction });
     });
     return order;
   }

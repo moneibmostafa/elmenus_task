@@ -12,12 +12,19 @@ class ItemController extends BaseController {
     });
   }
 
-  async createItem(body) {
-    try {
-      const payload = { ...body };
+  formatPayload(body) {
+    const payload = { ...body };
+    if (payload.availabilityCount !== undefined) {
       payload.available = false;
       if (payload.availabilityCount > 0) payload.available = true;
-      payload.price = payload.price.toFixed(2);
+    }
+    if (payload.price) payload.price = payload.price.toFixed(2);
+    return payload;
+  }
+
+  async createItem(body) {
+    try {
+      const payload = this.formatPayload(body);
       const item = await super.create(payload);
       return item;
     } catch (error) {
@@ -27,12 +34,7 @@ class ItemController extends BaseController {
 
   async updateItem(itemID, body) {
     try {
-      const payload = { ...body };
-      if (payload.availabilityCount !== undefined) {
-        payload.available = false;
-        if (payload.availabilityCount > 0) payload.available = true;
-      }
-      if (payload.price) payload.price = payload.price.toFixed(2);
+      const payload = this.formatPayload(body);
       const response = await super.update(itemID, payload);
       return response;
     } catch (error) {

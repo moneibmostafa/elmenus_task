@@ -18,13 +18,22 @@ jest.mock('./../../../server/adapters/database/user.adapter', () =>
 // mock get items by id from database
 jest.mock('./../../../server/adapters/database/item.adapter', () =>
   jest.fn().mockImplementation(() => ({
-    getByPk: jest.fn().mockReturnValue({
-      id: 'fe2a5148-f777-412a-b3ef-7c5063275f24',
-      availabilityCount: 2,
-      available: true,
-      price: 40,
-      name: 'charger',
-    }),
+    getByPk: jest
+      .fn()
+      .mockReturnValueOnce({
+        id: 'fe2a5148-f777-412a-b3ef-7c5063275f24',
+        availabilityCount: 2,
+        available: true,
+        price: 40,
+        name: 'charger',
+      })
+      .mockReturnValueOnce({
+        id: '9ddfa66d-75ae-4674-bd6c-41276d4c9bea',
+        availabilityCount: 2,
+        available: true,
+        price: 40,
+        name: 'charger',
+      }),
   }))
 );
 
