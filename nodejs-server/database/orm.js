@@ -18,8 +18,7 @@ const { logger } = require('../logger');
     }
     )
     .catch((error) => {
-      logger.log('error', 'Unable to connect to the database:', error);git 
-      setTimeout(() => databaseInit(), 5000);
+      logger.log('error', 'Unable to connect to the database:', error); 
     }
     );
   
