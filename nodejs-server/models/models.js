@@ -135,8 +135,22 @@ const User = db.define(
   }
 );
 
-Item.belongsToMany(Order, { through: 'itemsorders' });
-Order.belongsToMany(Item, { through: 'itemsorders' });
+Item.belongsToMany(Order, {
+  foreignKey: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    name: 'itemId',
+  },
+  through: 'itemsorders'
+});
+Order.belongsToMany(Item, {
+  foreignKey: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    name: 'orderId',
+  },
+  through: 'itemsorders'
+});
 Order.belongsTo(User);
 User.hasMany(Order);
 
