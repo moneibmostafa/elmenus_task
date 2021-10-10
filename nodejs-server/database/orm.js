@@ -10,18 +10,26 @@ const sequelize = new Sequelize(
     },
   }
 );
-sequelize
-  .authenticate()
-  .then(() =>
-    logger.log('info', 'Database connection has been established successfully.')
-  )
-  .catch((error) =>
-    logger.log('error', 'Unable to connect to the database:', error)
-  );
 
-sequelize
-  .sync({ alter: true })
-  .then(() => logger.log('info', 'sync successful.'))
-  .catch((error) => logger.log('error', 'sync failure', error));
+if (process.env.NODE_ENV === 'development') {
+  setTimeout(() => {
+    sequelize
+      .authenticate()
+      .then(() => {
+        logger.log('info', 'Database connection has been established successfully.');
+        connected = true;
+      }
+      )
+      .catch((error) => {
+        logger.log('error', 'Unable to connect to the database:', error);
+      }
+      );
+    
+    sequelize
+      .sync({ alter: true })
+      .then(() => logger.log('info', 'sync successful.'))
+      .catch((error) => logger.log('error', 'sync failure', error));
+  }, 5000);
+}
 
 module.exports = sequelize;
