@@ -14,10 +14,8 @@ class ItemController extends BaseController {
 
   formatPayload(body) {
     const payload = { ...body };
-    if (payload.availabilityCount !== undefined) {
-      payload.available = false;
-      if (payload.availabilityCount > 0) payload.available = true;
-    }
+    if (payload.availabilityCount !== undefined)
+      payload.available = payload.availabilityCount > 0;
     if (payload.price) payload.price = payload.price.toFixed(2);
     return payload;
   }

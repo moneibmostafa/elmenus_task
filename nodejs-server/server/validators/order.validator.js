@@ -12,6 +12,7 @@ module.exports = class OrderValidator extends BaseValidator {
     });
   }
 
+  // main function calling all validations
   validate(items) {
     // Fraud Detection
     const totalPrice = this.validateMaxValuePaymentFraud(items);
