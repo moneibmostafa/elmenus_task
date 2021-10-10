@@ -46,6 +46,7 @@ services:
       - MAX_ACCEPTABLE_PAYMENT=1500
     volumes:
       - ./nodejs-server:/server
+      - /nodejs-server/node_modules
     depends_on:
       - mysql-database-dev
     ports:
@@ -73,6 +74,8 @@ services:
 
       - MIN_ACCEPTABLE_PAYMENT=100
       - MAX_ACCEPTABLE_PAYMENT=1500
+    depends_on:
+      - mysql-database-dev
     ports:
       - "4000:4000"
     container_name: nodejs-server-test  
